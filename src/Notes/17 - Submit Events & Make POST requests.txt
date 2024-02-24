@@ -1,0 +1,103 @@
+During the stage, clicking the button will clear out the form inputs. Therefore, we need to stop it from doing so.
+The first thing to do, is to set  onSubmit event for the form and create an event listener [handleSubmit]
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  }
+
+  the handleSubmit will prevent the form from setting Default values for the submitted entries.
+
+then we add blog object for the inputs [  const blog = {title,body,author};  ]
+and when we console it, it will show the entered values.
+
+In order to pass inputs to the [db.json], we need to setup the API FETCH REQUEST by setting the API URL, the Call Method,
+Headers Connection, and the data in a converted JSON state:
+
+ const blog = {title,body,author};
+    setIsPending(true);
+    //Perform API Fetch and convert strings to JSON Type
+    fetch('http://localhost:8000/blogs', {
+      method: 'POST',
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(blog)
+    }).then(()=> {
+      console.log('new blog added')
+      setIsPending(false);
+    })
+  }
+
+  When data are FETCHED from the API, the returned results should pause until the full fetch. Therefore, we created a useState
+  for each state: one, when data are being fetched [isPending] and the second, when data are full fetched [setIsPending].
+
+
+  We finished the code with two buttons:
+    A) Add Blog Details
+    B) State button when the data are being added
+
+Create.js Script:
+-------------------
+import { useState } from "react";
+
+const Create = () => {
+  const [title,setTitle] = useState('');
+  const [body,setBody] = useState('');
+  const [author,setAuthor] = useState('mario');
+  const [isPending,setIsPending] = useState(false); //check the status of the adding process
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const blog = {title,body,author};
+    setIsPending(true);
+    //Perform API Fetch and convert strings to JSON Type
+    fetch('http://localhost:8000/blogs', {
+      method: 'POST',
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(blog)
+    }).then(()=> {
+      console.log('new blog added')
+      setIsPending(false);
+    })
+  }
+
+    return (
+      <div className="create">
+        <h2>Add a New Blog</h2>
+        <form onSubmit={handleSubmit}>
+          <label>Blog Title: </label>
+            <input
+            type="text"
+            required
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}>
+            </input>
+
+          <label>Blog Body: </label>
+            <textarea
+              required
+              value={body}
+              onChange={(e) => setBody(e.target.value)}>
+            </textarea>
+
+
+            <label>Blog Author: </label>
+              <select
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}>
+                <option value={"mario"}>mario</option>
+                <option value={"yoshi"}>yoshi</option>
+              </select>
+
+              {!isPending && <button>Add Blog</button>}
+              {isPending && <button disabled>Adding ..</button>}
+
+        </form>
+
+        <p>{title}</p>
+        <p>{body}</p>
+        <p>{author}</p>
+      </div>
+    );
+  }
+
+  export default Create;

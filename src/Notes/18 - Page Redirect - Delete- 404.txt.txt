@@ -1,0 +1,42 @@
+In order to goo back to the home page, we need to use useHistory. The first step is to import it.
+[import {useHistory} from 'react-router-dom';] and we end the fetch call with the following code:
+
+    //history.go(-1); Go back to the last page
+    history.push('/');
+
+    the minus one goes to the last page. the / redirects to the home page.
+
+    To add the Delete button and eventually Delete blog posts, we have added a handleClick function that delete
+    Blog posts by id. Then specify the method which is "DELETE". Then navigate to the homepage using the history push command
+
+
+
+    const handleClick = () => {
+    fetch('http://localhost:8000/blogs/' + blog.id, {
+      method: 'DELETE'
+    }).then(() => {
+      history.push('/');
+    })
+  }
+
+  And at the end of the BlogDetails.js component, we added a delete button with an event listener:
+  <button onClick={handleClick}>delete</button>
+
+  Once the button is clicked, the [handleClick] function is triggered, and the user gets navigated to the home page.
+
+
+  As for the 404 PAGE, we have to add a new component called NotFound.js
+
+  import { Link } from "react-router-dom"
+
+const NotFound = () => {
+  return (
+    <div className="not-found">
+      <h2>Sorry</h2>
+      <p>That page cannot be found</p>
+      <Link to="/">Back to the homepage...</Link>
+    </div>
+  );
+}
+
+export default NotFound;

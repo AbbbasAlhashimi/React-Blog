@@ -1,0 +1,69 @@
+In this script, we have created an error message that appears when a specific error takes place and display it on the page.
+
+we began by adding an additional useState for setting the error message status upon happening.
+then we changed the fetch  URL to test the error message [fetch('http://localhost:8000/blogs')] by adding an "s" to blogs
+which indicate there is an error in the specified URL "blogss"/
+We tested the connection with an "If Statement" to test out the connection and throw a
+customized error message "'Could not establish connection"
+then introduced the following error catch statement:
+
+      .catch(err => {
+        //console.log(err.message);
+        setError(err.message);
+        setIsPending(false);
+      })
+
+      this statement catches the error message and store it into the "setError" state.
+      When an error is happening, the pending message is set to false to indicate that no data are being loaded.
+
+      Then ended the script by displaying the stored error message from "setError" state into the page body using:
+      {error && <div> {error} </div>}
+
+      so if we save the code and the fetch URL is set to "http://localhost:8000/blogss", the loading message get hidden
+      and the error message is displayed due to the incorrect URL. but when we switch to the right URL, the loading message
+      gets displayed followed by fetched data and no errors are caught.
+
+
+Home.js Script
+-----------------
+import { useEffect, useState } from "react";
+import BlogList from "./BlogList";
+
+const Home = () => {
+  const [blogs, setBlogs] = useState(null);
+  const [isPending, setIsPending] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    setTimeout( () => {
+      fetch('http://localhost:8000/blogs')
+      .then(res => { //Check the Connection
+        if(!res.ok)
+        {
+          throw Error('Could not establish connection');
+        }
+        return res.json();
+      })
+      .then(data => {
+        setBlogs(data);
+        setIsPending(false);
+        setError(null);
+      })
+      .catch(err => {
+        //console.log(err.message);
+        setError(err.message);
+        setIsPending(false);
+      })
+    }, 1000)
+  }, []);
+
+  return (
+    <div className="home">
+      {error && <div> {error} </div>}
+      {isPending && <div>  Loading ... </div>}
+      {blogs && <BlogList blogs={blogs} />}
+    </div>
+  );
+}
+
+export default Home;

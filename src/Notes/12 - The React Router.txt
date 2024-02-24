@@ -1,0 +1,52 @@
+to install the Router package version 5, we should use the following code "npm install react-router-dom@5"
+
+Then we need to go to the App.js and Insert the following import statement:
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+
+Then we need to create the REACT Router that wraps the content with "Router" Component <Router> </Router>
+
+Then we need to decide where will our page content go when we navigate to different pages:
+So, we chose it to go inside the following DIV: <div className="content">
+
+So we inserted the Switch component "<Switch> </Switch>" which will make sure that only ONE Route will show at anytime.
+
+Then we add the Route Component  "<Route>  </Route>" which is responsible for setting the URL route after the home page.
+an example to it can be like this:
+
+        <Route path ="/">
+                <Home />
+        </Route>
+
+        However, when we navigate to the create blog page [/create], the page will not load.
+        to resolve this issue, we must add the word "exact" to the home page so React would display the contents of other pages.
+         <Route exact path="/">
+              <Home />
+            </Route>
+
+
+App.js Script:
+-----------------
+
+import Navbar from './Navbar';
+import Home from './Home';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+
+
+function App() {
+  return (
+    <Router>
+    <div className="App">
+      <Navbar />
+      <div className="content">
+          <Switch>
+              <Route path ="/">
+                <Home />
+              </Route>
+          </Switch>
+      </div>
+    </div>
+    </Router>
+  );
+}
+
+export default App;

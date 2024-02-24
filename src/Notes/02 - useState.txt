@@ -1,0 +1,19 @@
+import { useState } from "react"; --------> Calling useState to set a Dynamic Value
+const Home = () => {
+    const [name, setName] = useState('Mario'); --------> We are initializing two values to the useState and
+    set the default Value to "Mario".
+
+    const handleClick = () => {
+      setName('Abbas');  --------> When the handleClick function is called, passed a new value "Abbas"
+    }
+
+    return (
+      <div className="home">
+        <h2>Homepage</h2>
+        <p>{name}</p>
+        <button onClick={handleClick}> Click Me</button>
+      </div>
+    );
+  }
+
+  export default Home;

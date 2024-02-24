@@ -1,0 +1,98 @@
+In this Script, we added a DELETE Button that filters blog objects by "id".
+The changes that took place in the BlogList Component return values involved the following line:
+<button onClick={() => handleDelete(blog.id)}>Delete Blog</button>
+
+in this  line, we have set a Delete button to be returned with each "blog" object that when clicked,
+It specifies a function to be called when the button is clicked.
+
+() => handleDelete(blog.id): This is an arrow function defined as the value of the onClick prop.
+When the button is clicked, this arrow function is executed.
+
+Inside this arrow function, handleDelete(blog.id) is called.
+handleDelete is a function passed to the BlogList component as a prop, and it takes an "id" parameter.
+In this context, blog.id is passed as the id parameter to handleDelete, indicating which blog post should be deleted.
+
+When the BlogList component is called via the following Script:
+ <BlogList blogs={blogs} title="All Blogs" handleDelete={handleDelete} />
+
+ the returned clickable button function "handleDelete" creates a new array "newBlogs" to hold the new filtered "blog"
+ object values and set the second useState with the "setBlogs" values.
+
+ So, when the button is clicked, the "handleDelete" function will call the "Blog" objects by values, store them into a
+ new array "newBlogs" and set it as the useState object state after the handleDelete function is fully processed.
+
+the handleDelete function until there are no blogs left to delete:
+
+Initial State: Initially, you have a list of blog posts stored in the blogs state variable.
+Each blog post has a unique id property.
+
+Clicking Delete Button: When you click the "Delete Blog" button associated with a particular blog post,
+the handleDelete function is triggered with the id of that blog post.
+
+Filtering Blogs: Inside the handleDelete function, a new array newBlogs is created using the filter method.
+This method iterates over each blog post in the blogs array.
+
+Conditional Check: For each blog post, the filter method checks if its id is equal to the id of the blog post being deleted.
+If the id matches, that blog post is excluded from the newBlogs array. If the id doesn't match,
+the blog post is included in the newBlogs array.
+
+Updating State: After filtering, the setBlogs function is called with the newBlogs array as its argument.
+This updates the state variable blogs with the filtered array, effectively removing the blog post
+with the specified id from the UI.
+
+Rerendering Component: Since the state has been updated, React will rerender the component with the updated list of blogs.
+
+Repeat: Steps 2-6 continue each time you click the "Delete Blog" button for another blog post.
+Each time you delete a blog post, it is removed from the blogs array, and the updated list is displayed.
+
+Termination: The cycle ends when there are no more blog posts left to delete, i.e., when the blogs array becomes empty.
+At this point, clicking the "Delete Blog" button for any blog post will have no effect
+because there are no blog posts left to delete.
+
+Home.js Script:
+-----------------
+import { useState } from "react";
+import BlogList from "./BlogList";
+
+const Home = () => {
+  const [blogs, setBlogs] = useState([
+    { title: 'My new website', body: 'lorem ipsum...', author: 'mario', id: 1 },
+    { title: 'Welcome party!', body: 'lorem ipsum...', author: 'yoshi', id: 2 },
+    { title: 'Web dev top tips', body: 'lorem ipsum...', author: 'mario', id: 3 }
+  ]);
+
+  const handleDelete = (id) => {
+    const newBlogs = blogs.filter(blog => blog.id !== id);
+    setBlogs(newBlogs);
+  }
+    return (
+      <div className="home">
+        <BlogList blogs={blogs} title="All Blogs" handleDelete={handleDelete} />
+      </div>
+    );
+  }
+
+  export default Home;
+
+
+  BlogList.js Script:
+  ---------------------
+
+  const BlogList = ({blogs,title, handleDelete}) => {
+    return (
+        <div className="blog-list">
+            <h2>{title}</h2>
+            {blogs.map( (blog) => (
+                <div className="blog-preview" key={blog.id}>
+                    <h2>{blog.title}</h2>
+                    <p>Written by {blog.author}</p>
+
+                <button onClick={() => handleDelete(blog.id)}>Delete Blog</button>
+                </div>
+        ))}
+
+        </div>
+    );
+}
+
+export default BlogList;

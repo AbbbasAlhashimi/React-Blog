@@ -1,0 +1,49 @@
+In order to return the data from [data/db.json], then we can check the [useFetch] returned values which are:
+ return { data, isPending, error };
+
+ To do so, we need to modify the BlogDetails Component, so when the blog is clicked, it will display the contents
+ from the [db JSON] file.
+
+ 1) First, we need to create the Hook using the [useFetch] Parameters:
+    const {data:blog,error,isPending} = useFetch('http://localhost:8000/blogs/'+id);// Reuse Hook
+2) Second, we need to pass the [useFetch] Parameters into the [blog-details] DIV
+            {isPending && <div> Loading ...</div>} // Check if the {isPending} working
+            {error && <div>{error}</div>}          // Check for any errors
+
+3) Third, we need to display the blog content in an [article] section:
+
+            {blog && (
+                <article>
+                    <h2> {blog.title}</h2>
+                    <p>Written by {blog.author}</p>
+                    <div> {blog.body}</div>
+                </article>
+            )}
+
+
+ BlogDetails Script
+ -------------------
+ import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import useFetch from "./useFetch";
+
+const BlogDetails = () => {
+
+    const {id} = useParams();//hook that calls id
+    const {data:blog,error,isPending} = useFetch('http://localhost:8000/blogs/'+id);// Reuse Hook
+
+    return (
+        <div className="blog-details">
+            {isPending && <div> Loading ...</div>}
+            {error && <div>{error}</div>}
+            {blog && (
+                <article>
+                    <h2> {blog.title}</h2>
+                    <p>Written by {blog.author}</p>
+                    <div> {blog.body}</div>
+                </article>
+            )}
+        </div>
+    );
+}
+
+export default BlogDetails;

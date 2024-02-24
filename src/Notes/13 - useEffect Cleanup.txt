@@ -1,0 +1,54 @@
+One of the most common warnings in REACT, is the one related to "Unmounted Component". This error happens when we navigate
+to another page before the data get fetched successfully. To stop the fetch without an error, we will use a combination of
+1) the cleanup function in a useEffect hook, and 2) The Abort controller.
+
+The first step, we need to insert the "CleanUp" Function inside the useEffect function:
+The second step, create an "AbortController" by setting [const abortCont = new AbortController();] inside the useEffect Function
+Then we need to associate it with a fetch using a second argument like this: [fetch(url, {signal: abortCont})]
+Finally, we associate it with  an Abort command when the fetch is paused.
+
+useFetch.js Script:
+--------------------
+
+import { useState, useEffect } from 'react';
+
+const useFetch = (url) => {
+  const [data, setData] = useState(null);
+  const [isPending, setIsPending] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const abortCont = new AbortController();
+
+    setTimeout(() => {
+      fetch(url, { signal: abortCont.signal })
+      .then(res => {
+        if (!res.ok) { // error coming back from server
+          throw Error('could not fetch the data for that resource');
+        }
+        return res.json();
+      })
+      .then(data => {
+        setIsPending(false);
+        setData(data);
+        setError(null);
+      })
+      .catch(err => {
+        if (err.name === 'AbortError') {
+          console.log('fetch aborted')
+        } else {
+          // auto catches network / connection error
+          setIsPending(false);
+          setError(err.message);
+        }
+      })
+    }, 1000);
+
+    // abort the fetch
+    return () => abortCont.abort();
+  }, [url])
+
+  return { data, isPending, error };
+}
+
+export default useFetch;

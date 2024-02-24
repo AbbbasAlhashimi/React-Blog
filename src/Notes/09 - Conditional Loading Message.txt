@@ -1,0 +1,39 @@
+In this script, we have defined an additional useState constant with two values: isPending and setIsPending and
+a default value of "true"
+
+Then set a setTimeout function that schedules a callback function to be executed after a specified delay of 1 second.
+However, when data are fetched, the setTimeout is set to false.
+
+
+Home.js Script:
+-----------------
+
+import { useEffect, useState } from "react";
+import BlogList from "./BlogList";
+
+const Home = () => {
+  const [blogs, setBlogs] = useState(null);
+  const [isPending, setIsPending] = useState(true);
+
+  useEffect(() => {
+    setTimeout( () => {
+      fetch('http://localhost:8000/blogs')
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+        setBlogs(data);
+        setIsPending(false);
+      });
+    }, 1000)
+  }, []);
+
+  return (
+    <div className="home">
+      {isPending && <div>  Loading ... </div>}
+      {blogs && <BlogList blogs={blogs} />}
+    </div>
+  );
+}
+
+export default Home;

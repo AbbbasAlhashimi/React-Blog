@@ -1,0 +1,51 @@
+In order to create a Customized Blog page or post ID, we need to create a hook that calls pages by ID. To begin,
+we need to create a new component. We create BlogDetails.js with the following script:
+
+In this code, we used the [useParams] hook React Router that allows access the dynamic parameters in the URL of a Route.
+
+
+---------------------------------------
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+
+const BlogDetails = () => {
+
+    const {id} = useParams();//hook that calls id
+    return (
+        <div className="blog-details">
+            <h2> Blog Details {id} </h2>
+        </div>
+    );
+}
+
+export default BlogDetails;
+
+-------------------------------------------
+Then we jumped to the BlogList.js to set the hook.
+
+So, we added a The [Link] component from react-router-dom creates an anchor (a)
+element that will be used as a navigational link within your app. and used the following code to point at the blog ID:
+   <Link to={`blogs/${blog.id}`}>
+
+
+BlogList.js script
+---------------------------
+
+import { Link } from "react-router-dom/cjs/react-router-dom";
+
+const BlogList = ({ blogs }) => {
+    return (
+      <div className="blog-list">
+        {blogs.map(blog => (
+          <div className="blog-preview" key={blog.id} >
+              <Link to={`blogs/${blog.id}`}>
+              <h2>{ blog.title }</h2>
+              <p>Written by { blog.author }</p>
+              </Link>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  export default BlogList;
+

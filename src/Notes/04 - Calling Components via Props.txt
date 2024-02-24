@@ -1,0 +1,55 @@
+We Added a file called BlogList.js so we can store the array passed in through the useState JSX request:
+
+1) we used <BlogList  blogs={blogs} title = "All Blogs:"/> inside the Home Page to call the Blog object data stored
+    in BlogList.js
+2) We called the Parent BlogList object using the <BlogList /> child object.
+3) when the BlogList Parent object is called, the returned values are called back as Props.
+4) The props are used to call the blogs object values using the Child object <BlogList /> and pointing out to its parameters
+using the map keys.
+
+
+
+We have the following Home.js Script
+
+---------------------------------------
+import { useState } from "react";
+import BlogList from "./BlogList";
+
+const Home = () => {
+  const [blogs, setBlogs] = useState([ --------> Stateless Functional Component
+    { title: 'My new website', body: 'lorem ipsum...', author: 'mario', id: 1 },
+    { title: 'Welcome party!', body: 'lorem ipsum...', author: 'yoshi', id: 2 },
+    { title: 'Web dev top tips', body: 'lorem ipsum...', author: 'mario', id: 3 }
+  ])
+    return (
+      <div className="home">
+        <BlogList  blogs={blogs} title = "All Blogs:"/>
+      </div>
+    );
+  }
+
+  export default Home;
+
+---------------------------------------
+
+We Also have the BlogList Script:
+
+const BlogList = (props) => {
+    const blogs = props.blogs;
+    const title = props.title;
+    return (
+        <div className="blog-list">
+            <h2>{title}</h2>
+            {blogs.map( (blog) => (
+                <div className="blog-preview" key={blog.id}>
+                    <h2>{blog.title}</h2>
+                    <p>Written by {blog.author}</p>
+
+                </div>
+        ))}
+
+        </div>
+    );
+}
+
+export default BlogList;

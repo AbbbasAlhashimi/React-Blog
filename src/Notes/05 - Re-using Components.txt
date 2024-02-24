@@ -1,0 +1,77 @@
+In this example, we have declared the array off objects "blogs" where each object with [title, body, and author] is
+called "blog"
+
+When the Blog component is called via the following SCRIPT:
+
+<div className="blog-list">
+            <h2>{title}</h2>
+            {blogs.map( (blog) => (
+                <div className="blog-preview" key={blog.id}>
+                    <h2>{blog.title}</h2>
+                    <p>Written by {blog.author}</p>
+
+                </div>
+        ))}
+
+        </div>
+
+        the returned value consist of:
+        1) Styled <DIV> with called "blog-list".
+        2) the blog title
+        3) the blogs map which  is a higher-order function in JavaScript used to iterate over each item in an array.
+        4) "Key" which is an identifier for the sequence of items being called by react.
+        5) Each "title in each blog object within the "blogs" array.
+        6) Each "author in each blog object within the "blogs" array.
+
+        When the BlogList component is called inside Home.js, it gets called twice
+        First: <BlogList  blogs={blogs} title = "All Blogs!"/>
+        Bloglist component is called by name "Bloglist" with  the title which is a prop being passed to the BlogList component.
+
+        Second: <BlogList  blogs={blogs.filter(blog => blog.author === 'yoshi')} title="Mario's Blogs" />
+        Bloglist component is called by name "Bloglist" with a filtered result using an arrow function that specify the
+        requested returned value as "blog" object with author name of "yoshi". which can be found in the following blog:
+        { title: 'Welcome party!', body: 'lorem ipsum...', author: 'yoshi', id: 2 },
+
+
+
+Home SCRIPT
+-------------------------
+import { useState } from "react";
+import BlogList from "./BlogList";
+
+const Home = () => {
+  const [blogs, setBlogs] = useState([
+    { title: 'My new website', body: 'lorem ipsum...', author: 'mario', id: 1 },
+    { title: 'Welcome party!', body: 'lorem ipsum...', author: 'yoshi', id: 2 },
+    { title: 'Web dev top tips', body: 'lorem ipsum...', author: 'mario', id: 3 }
+  ])
+    return (
+      <div className="home">
+        <BlogList  blogs={blogs} title = "All Blogs!"/>
+        <BlogList  blogs={blogs.filter(blog => blog.author === 'yoshi')} title="Mario's Blogs" />
+      </div>
+    );
+  }
+
+  export default Home;
+
+
+  BlogList.js SCRIPT
+  ------------------------
+  const BlogList = ({blogs,title}) => {
+    return (
+        <div className="blog-list">
+            <h2>{title}</h2>
+            {blogs.map( (blog) => (
+                <div className="blog-preview" key={blog.id}>
+                    <h2>{blog.title}</h2>
+                    <p>Written by {blog.author}</p>
+
+                </div>
+        ))}
+
+        </div>
+    );
+}
+
+export default BlogList;

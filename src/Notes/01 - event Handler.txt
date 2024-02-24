@@ -1,0 +1,23 @@
+
+const Home = () => {
+
+  const handClick = (e) => { --------> We're calling an event handler "e"
+    console.log('Hello World', e.type); --------> calling the text 'Hello World" and the event handler type which is "Click"
+  }
+
+  const handleClickAgain = (name, e) => {
+    console.log('Welcome ' + name, e.target);
+  }
+
+    return (
+      <div className="home">
+        <h2>Homepage</h2>
+        <button onClick={handClick}> Click Me</button>
+        <button onClick={ (e) => handleClickAgain('Abbas', e)}> Click Me Again</button>
+        -------->  We are passing the event handler as a parameter to the Arrow Function that only when clicked, the
+                    the handleClick function will pass the string "Abbas" alongside the event handler parameter.
+      </div>
+    );
+  }
+
+  export default Home;

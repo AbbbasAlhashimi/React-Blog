@@ -1,0 +1,68 @@
+To set Inputs from a Form in thee "Create Blog" page, we need to perform the following:
+1) we need to create the form and prepare the type and value fields for input.
+2) we need to set states for the changing state of values [title, body, author] and set the default values:
+
+const Create = () => {
+  const [title,setTitle] = useState('');
+  const [body,setBody] = useState('');
+  const [author,setAuthor] = useState('mario');
+
+ 4) Sync the form inputs with passed out default input states ["","", "mario"].
+ 5) set [onChange] anonymous functions that catches change in input between the default value and the newly entered ones.
+
+    A) onChange={(e) => setTitle(e.target.value)}>
+    b) onChange={(e) => setBody(e.target.value)}>
+    c) onChange={(e) => setAuthor(e.target.value)}>
+6) Display the final states of values in a <div> bellow the button to verify the inputs.
+
+
+Create.js Script:
+--------------------
+
+import { useState } from "react";
+
+const Create = () => {
+  const [title,setTitle] = useState('');
+  const [body,setBody] = useState('');
+  const [author,setAuthor] = useState('mario');
+
+    return (
+      <div className="create">
+        <h2>Add a New Blog</h2>
+        <form>
+          <label>Blog Title: </label>
+            <input
+            type="text"
+            required
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}>
+            </input>
+
+          <label>Blog Body: </label>
+            <textarea
+              required
+              value={body}
+              onChange={(e) => setBody(e.target.value)}>
+            </textarea>
+
+
+            <label>Blog Author: </label>
+              <select
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}>
+                <option value={"mario"}>mario</option>
+                <option value={"yoshi"}>yoshi</option>
+              </select>
+
+              <button>Add Blog</button>
+
+        </form>
+
+        <p>{title}</p>
+        <p>{body}</p>
+        <p>{author}</p>
+      </div>
+    );
+  }
+
+  export default Create;
